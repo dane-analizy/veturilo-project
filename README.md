@@ -206,7 +206,7 @@ Katalog `target/` jest artefaktem dbt. Nie edytuje się w nim modeli ręcznie. �
 Modele w `models/01_bronze/` czytają JSON-y za pomocą DuckDB, rozwijają `network.stations` przez `UNNEST` i zapisują dane do Parquet.
 
 - `bronze_veturilo.sql` zawiera stan stacji, liczbę rowerów, wolne miejsca i tablice `bike_uids`,
-- `bronze_weather.sql` przygotowuje dane pogodowe.
+- `bronze_weather.sql` przygotowuje dane pogodowe. Uwaga - potrzebujesz pliku `data/raw/weather.parquet` z danymi pogodowymi w odpowiedniej strukturze
 
 ### Warstwa Silver
 

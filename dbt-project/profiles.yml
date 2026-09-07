@@ -1,7 +1,7 @@
 # Konfiguracja profilu dbt dla projektu Veturilo.
 # Profil definiuje połączenie z bazą danych używaną przez dbt.
 # Nazwa profilu musi być identyczna z wartością 'profile' w dbt_project.yml.
-veturilo_dbt:
+veturilo:
   # Domyślne środowisko uruchomieniowe (można nadpisać flagą --target).
   target: dev
   outputs:

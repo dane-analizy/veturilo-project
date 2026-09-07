@@ -2,12 +2,12 @@
 # Projekt przetwarza surowe dane JSON (zrzuty API co minutę) na
 # ustrukturyzowane tabele analityczne w formacie Parquet.
 
-name: 'veturilo_dbt'
+name: 'veturilo'
 version: '1.0.0'
 config-version: 2
 
 # Profil połączenia z bazą danych - musi pasować do nazwy w profiles.yml.
-profile: 'veturilo_dbt'
+profile: 'veturilo'
 
 # Katalog, w którym dbt szuka plików .sql z modelami.
 model-paths: ["models"]
@@ -21,7 +21,7 @@ on-run-start:
   - "{{ register_upstream_external_models() }}"
 
 models:
-  veturilo_dbt:
+  veturilo:
     # Domyślna materializacja dla wszystkich modeli w projekcie.
     # 'external' oznacza zapis bezpośrednio do plików Parquet na dysku
     # (za pośrednictwem rozszerzenia dbt-duckdb), zamiast tworzenia tabel w bazie.
