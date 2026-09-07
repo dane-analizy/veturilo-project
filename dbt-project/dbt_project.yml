@@ -1,0 +1,28 @@
+# Definicja projektu dbt dla systemu roweru publicznego Veturilo.
+# Projekt przetwarza surowe dane JSON (zrzuty API co minutę) na
+# ustrukturyzowane tabele analityczne w formacie Parquet.
+
+name: 'veturilo_dbt'
+version: '1.0.0'
+config-version: 2
+
+# Profil połączenia z bazą danych - musi pasować do nazwy w profiles.yml.
+profile: 'veturilo_dbt'
+
+# Katalog, w którym dbt szuka plików .sql z modelami.
+model-paths: ["models"]
+
+# Automatyczna rejestracja zewnętrznych modeli upstream (pliki Parquet na dysku):
+# Gdy uruchamiamy wybrane modele (np. 'dbt run --select 02_silver+'), dbt pomija model bronze_veturilo.
+# Makro 'register_upstream_external_models' wykrywa istniejące pliki Parquet w data/bronze/ i na starcie
+# tworzy na nie widoki w DuckDB. Dzięki temu w trybie bazy w pamięci (:memory:) nie pojawia się błąd braku
+# widoku bronze_veturilo, a w trybie plikowym widoki są zawsze aktualizowane do plików na dysku.
+on-run-start:
+  - "{{ register_upstream_external_models() }}"
+
+models:
+  veturilo_dbt:
+    # Domyślna materializacja dla wszystkich modeli w projekcie.
+    # 'external' oznacza zapis bezpośrednio do plików Parquet na dysku
+    # (za pośrednictwem rozszerzenia dbt-duckdb), zamiast tworzenia tabel w bazie.
+    +materialized: external

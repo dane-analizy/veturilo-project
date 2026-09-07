@@ -1,0 +1,6 @@
+data/processed
+data/corrupted
+data/raw
+data/raw_all
+logs/
+target/

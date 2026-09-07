@@ -1,0 +1,27 @@
+# Konfiguracja profilu dbt dla projektu Veturilo.
+# Profil definiuje połączenie z bazą danych używaną przez dbt.
+# Nazwa profilu musi być identyczna z wartością 'profile' w dbt_project.yml.
+veturilo_dbt:
+  # Domyślne środowisko uruchomieniowe (można nadpisać flagą --target).
+  target: dev
+  outputs:
+    dev:
+      # Baza danych: DuckDB - silnik analityczny in-process.
+      type: duckdb
+      # Baza w pamięci RAM (:memory:) - eliminuje podwójny zapis I/O na dysk
+      # oraz rozrastanie się pliku bazy dla tabel tymczasowych (__dbt_tmp).
+      # Jeśli potrzebujesz bazy plikowej do odpytywania z CLI, zmień na: veturilo.duckdb
+      path: ':memory:'
+      # Współbieżność dbt: pozwala budować do 3 niezależnych modeli DAG równolegle
+      # (np. dim_stations, fct_station_snapshots i fct_bike_snapshots w warstwie Silver).
+      threads: 3
+      extensions:
+        # Rozszerzenie 'spatial' jest wymagane przez model bike_trips.sql
+        # do obliczania rzeczywistego dystansu między stacjami po powierzchni Ziemi
+        # (funkcja ST_Distance_Spheroid).
+        - spatial
+      settings:
+        # Duży limit pamięci RAM - dane są obszerne (wiele miesięcy pomiarów co minutę).
+        memory_limit: "18GB"
+        # Limit miejsca na dysku dla operacji sortowania/agregacji przekraczających RAM.
+        max_temp_directory_size: "50GB"
